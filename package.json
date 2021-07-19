@@ -1,16 +1,16 @@
 {
-    "name": "@upradata/stream-util",
+    "name": "@upradata/stream",
     "author": {
-        "name": "Thomas Milotti",
+        "name": "Thomas Milotti (Upra-Data)",
         "email": "thomas.milotti@gmail.com",
         "url": "https://github.com/upradata"
     },
     "repository": {
-        "url": "https://github.com/mt-typescript/node-util.git"
+        "url": "https://github.com/upradata/stream.git"
     },
     "license": "MIT",
     "version": "2.0.0",
-    "description": "Set of typescript util tools working in NodeJs",
+    "description": "Set of typescript util for node 'stream'",
     "sideEffects": false,
     "main": "lib",
     "types": "lib-esm",
@@ -28,7 +28,7 @@
     "scripts": {
         "clean": "shx rm -rf lib lib-esm",
         "pre:build": "npm run clean",
-        "build": "concurrently 'tsc -p tsconfig.lib.json' 'tsc -p tsconfig.lib-esm.json' && pnpm run copy:declaration",
+        "build": "concurrently 'tsc -p tsconfig.lib.json' 'tsc -p tsconfig.lib-esm.json'",
         "post:build": "npm run test && npm run e2e",
         "copy:declaration": "cp src/@types/webpack.d.ts lib/@types && cp src/@types/webpack.d.ts lib-esm/@types",
         "watch": "pnpm run build:watch",
