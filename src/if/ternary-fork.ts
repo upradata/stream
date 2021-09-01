@@ -85,7 +85,7 @@ export class TernaryForksStream<Data> extends stream.Writable {
         this.addInitListener(() => this.condition.init());
     }
 
-    addInitListener(listener: AnyFunction) {
+    addInitListener(listener: Function0<TT$<void>>) {
         this.initListeners.push(listener);
     }
 
