@@ -12,8 +12,8 @@ export type PassThroughFunctionOptions<Data> = PassThroughFunctionObj<Data> | Pa
 export type PassThroughOptions = stream.DuplexOptions & { sink?: boolean; };
 
 
-export function passThroughImpl<Data, Opts extends PassThroughOptions>(options: Opts, passThrounghFunc?: PassThroughFunctionOptions<Data>):
-    Opts[ 'sink' ] extends true ? NodeJS.ReadableStream : stream.Transform {
+const passThroughImpl = <Data, Opts extends PassThroughOptions>(options: Opts, passThrounghFunc?: PassThroughFunctionOptions<Data>):
+    Opts[ 'sink' ] extends true ? NodeJS.ReadableStream : stream.Transform => {
 
     const transform = passThrounghFunc ? typeof passThrounghFunc === 'function' ? passThrounghFunc : passThrounghFunc.transform : undefined;
     const flush = passThrounghFunc ? typeof passThrounghFunc === 'function' ? undefined : passThrounghFunc.flush : undefined;
@@ -32,7 +32,7 @@ export function passThroughImpl<Data, Opts extends PassThroughOptions>(options: 
     });
 
     return options.sink ? sink(stream) : stream as any;
-}
+};
 
 export const passThrough = <Data>(passThrounghFunc?: PassThroughFunctionOptions<Data>, options?: PassThroughOptions) => passThroughImpl(
     { objectMode: false, encoding: 'utf8', ...options }, passThrounghFunc
