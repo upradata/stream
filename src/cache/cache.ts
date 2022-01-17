@@ -4,7 +4,7 @@ import stream from 'stream';
 import through from 'through2';
 import VinylFile from 'vinyl';
 import { Cache, CacheOptions } from '@upradata/node-util';
-import { AssignOptions, assignRecursive, PartialRecursive } from '@upradata/util';
+import { AssignOptions, assignDefaultOption, PartialRecursive } from '@upradata/util';
 
 
 export type StreamCacheMode = 'manual' | 'auto';
@@ -28,14 +28,17 @@ export class StreamCacheOptions {
     cache?: Cache;
 }
 
+export type StreamCacheOpts = PartialRecursive<Omit<StreamCacheOptions, 'cache'>> & { cache?: Cache; };
+
+
 /* export */ class StreamCache {
     public pluginName = this.constructor.name;
     public cache: Cache;
     public options: StreamCacheOptions;
     private used: boolean = false;
 
-    constructor(options?: PartialRecursive<StreamCacheOptions> & { cache?: Cache; }) {
-        this.options = assignRecursive(new StreamCacheOptions(), options, new AssignOptions({ except: [ 'cache' ], arrayMode: 'replace' }));
+    constructor(options?: StreamCacheOpts) {
+        this.options = assignDefaultOption(new StreamCacheOptions(), options, new AssignOptions({ except: [ 'cache' ], arrayMode: 'replace' }));
 
         if (options.cache)
             this.cache = options.cache;
@@ -107,6 +110,6 @@ export class StreamCacheOptions {
 }
 
 
-export function streamCache(options?: PartialRecursive<StreamCacheOptions> & { cache?: Cache; }) {
+export function streamCache(options?: StreamCacheOpts) {
     return new StreamCache(options).run();
 }
