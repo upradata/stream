@@ -7,7 +7,7 @@ import { Cache, CacheOptions } from '@upradata/node-util';
 import { AssignOptions, assignDefaultOption, PartialRecursive } from '@upradata/util';
 
 
-export type StreamCacheMode = 'manual' | 'auto';
+export type StreamCacheSaveMode = 'manual' | 'auto';
 
 
 export class StreamCacheConfig {
@@ -15,7 +15,7 @@ export class StreamCacheConfig {
     emitName: string;
     collectionName: string | string[] = [ 'default' ];
     filter: (file: VinylFile) => boolean = _file => true;
-    mode: StreamCacheMode = 'auto';
+    saveMode: StreamCacheSaveMode = 'auto';
     filePath: (file: VinylFile) => string = file => file.path;
     disabled: boolean = false;
     debug?: string;
@@ -85,7 +85,7 @@ export type StreamCacheOpts = PartialRecursive<Omit<StreamCacheOptions, 'cache'>
     }
 
     private async flush(stream: stream.Readable, cb: () => void) {
-        const { emitCache, emitName, mode, disabled } = this.options.streamCache;
+        const { emitCache, emitName, saveMode: mode, disabled } = this.options.streamCache;
 
         if (disabled)
             return cb();
